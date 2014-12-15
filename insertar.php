@@ -25,37 +25,10 @@ if (!isset($_SESSION['admin'])) {
   <!-- Container -->
   <div class="container">
 
-    <!-- NavBar -->
-      <div class="navbar navbar-default" role="navigation">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">Sistema de Pagos CM</a>
-          </div>
-          <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-              <li class="active"><a href="#">Insertar Pagos</a></li>
-              <?php if($_SESSION['admin'] == 1) : ?>
-              <li><a href="aprobar.php">Aprobar Pagos</a></li>
-              <?php endif; ?>
-              <li><a href="eliminar.php">Eliminar Pagos</a></li>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Ver Pagos <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li><a href="aprobados.php">Aprobados</a></li>
-                  <li><a href="poraprobar.php">Por Aprobar</a></li>
-                  <li><a href="rechazados.php">Rechazados</a></li>
-                </ul>
-              </li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div><!--/.container-fluid -->
-      </div>
+    <?php 
+      $active="insertar";
+      include "navbar.php";
+    ?>
 
     <!-- Jumbotron -->
     <div class="jumbotron">
@@ -138,6 +111,10 @@ if (!isset($_SESSION['admin'])) {
 
     </div> <!-- /. Jumbotron -->
 
+      <footer>
+        <p>© Castillomax 2014</p>
+      </footer>
+      
   </div> <!-- /. Container -->
 
   <script type="text/javascript">

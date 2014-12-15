@@ -41,7 +41,10 @@ if (!isset($token_data)) {
   $_SESSION['email'] = $token_data[payload][email]; 
   $_SESSION['domain'] = $token_data[payload][hd]; 
   $_SESSION['verified'] = $token_data[payload][email_verified];
-  if ($token_data[payload][email] == 'latencio@castillomax.com' || $token_data[payload][email] == 'mcastillo@castillomax.com' || $token_data[payload][email] == 'jviloria@castillomax.com') {
+  if ($token_data[payload][email] == 'latencio@castillomax.com'  || 
+  	  $token_data[payload][email] == 'jviloria@castillomax.com' || 
+  	  $token_data[payload][email] == 'mcastillo@castillomax.com' || 
+  	  $token_data[payload][email] == 'lramirez@castillomax.com' ) {
     $_SESSION['admin'] = 1;
   } else {
     $_SESSION['admin'] = 0;
