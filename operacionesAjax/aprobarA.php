@@ -10,6 +10,6 @@
 	mysql_select_db($dbname);
 
 	$query = "UPDATE Pagos SET Aprobado = $oper WHERE id IN ($id)";
-	print $query;
+	//print $query;
 	$result = mysql_query($query);
 ?>

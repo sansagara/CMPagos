@@ -101,9 +101,10 @@ if (!isset($_SESSION['admin'])) {
 
     </div> <!-- /. Jumbotron -->
 
-      <footer>
-        <p>© Castillomax 2014</p>
-      </footer>
+	<hr>
+      	<footer>
+		<p>© Castillomax 2014</p>
+      	</footer>
       
     </div> <!-- /. Container -->
 
@@ -130,7 +131,7 @@ if (!isset($_SESSION['admin'])) {
 
       $.ajax({
           type: "POST",
-          url: "insertarA.php",
+          url: "operacionesAjax/insertarPresupuesto.php",
           data: { tipo:Tipo, prioridad:Prioridad, beneficiario:Beneficiario, descripcion:Descripcion, monto:Monto, fecha:Fecha },
           success : function(data) {
             console.log(data);

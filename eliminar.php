@@ -156,7 +156,7 @@ if (!isset($_SESSION['admin'])) {
 		function EnviarDatos(oper) {
 			$.ajax({
 		  		type: "POST",
-		  		url: "aprobarA.php",
+		  		url: "operacionesAjax/aprobarA.php",
 		  		data: { id:selected, oper:oper },
 		  		success : function(data) {
 					location.reload();

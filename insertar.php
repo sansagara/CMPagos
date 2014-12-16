@@ -140,7 +140,7 @@ if (!isset($_SESSION['admin'])) {
 
       $.ajax({
           type: "POST",
-          url: "insertarA.php",
+          url: "operacionesAjax/insertarA.php",
           data: { tipo:Tipo, prioridad:Prioridad, beneficiario:Beneficiario, descripcion:Descripcion, monto:Monto, fecha:Fecha },
           success : function(data) {
             console.log(data);
