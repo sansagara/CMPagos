@@ -31,15 +31,16 @@
             <li class="dropdown">
                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gestionar Presupuesto <b class="caret"></b></a>
                <ul class="dropdown-menu">
-                  <li <?php $active=='crearpresupuesto'  and print 'class="active"' ?> ><a href="crearpresupuesto.php">Crear</a></li>
-                  <li <?php $active=='reportargasto' and print 'class="active"' ?> ><a href="reportargasto.php">Actualizar</a></li>
+                  <li <?php $active=='crearpresupuesto' and print 'class="active"' ?> ><a href="crearpresupuesto.php">Crear</a></li>
+                  <li <?php $active=='aprobarpresupuesto' and print 'class="active"' ?> ><a href="#">Aprobar</a></li>
+                  <li <?php $active=='reportargasto' and print 'class="active"' ?> ><a href="reportargasto.php">Reportar Gasto</a></li>
                </ul>
             </li>
             <li class="dropdown">
                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Ver Presupuestos <b class="caret"></b></a>
                <ul class="dropdown-menu">
                   <li <?php $active=='presupuestogeneral'  and print 'class="active"' ?> ><a href="presupuestogeneral.php">General</a></li>
-                  <li <?php $active=='presupuestodetallado' and print 'class="active"' ?> ><a href="presupuestodetallado.php">Detallado</a></li>
+                  <li <?php $active=='presupuestodetallado' and print 'class="active"' ?> ><a href="#">Detallado</a></li>
                </ul>
             </li>
          </ul>

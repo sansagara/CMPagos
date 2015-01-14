@@ -50,10 +50,10 @@ header("Location: login.php");
     <div class="container">
       
       <?php 
-$active="presupuestogeneral";
-include "navbar.php";
-?>
-      
+        $active="presupuestogeneral";
+        include "navbar.php";
+      ?>
+
       <!-- Jumbotron -->
       <div class="jumbotron">
 		<?php
@@ -80,49 +80,80 @@ include "navbar.php";
 			<hr>
 			<div class='collapse' id='collapse$id_direccion'>
 			";
-		$query2 = "SELECT * FROM Presupuesto WHERE id_direccion = '$id_direccion'";
+
+		$query2 = "SELECT DISTINCT P . * , (
+    SELECT IFNULL( SUM( cantidad_bs ) , 0 ) 
+    FROM Gastos
+    WHERE id_direccion = P.id_direccion
+    AND partida = P.partida
+    )gasto_bs, (
+
+    SELECT IFNULL( SUM( cantidad_usd ) , 0 ) 
+    FROM Gastos
+    WHERE id_direccion = P.id_direccion
+    AND partida = P.partida
+    )gasto_usd, (
+
+    SELECT IFNULL( SUM( cantidad_eur ) , 0 ) 
+    FROM Gastos
+    WHERE id_direccion = P.id_direccion
+    AND partida = P.partida
+    )gasto_eur
+    FROM Presupuesto P
+    LEFT JOIN Gastos G ON ( P.id_direccion = G.id_direccion
+    AND P.Partida = G.Partida ) 
+    WHERE P.id_direccion = $id_direccion";
+    //print $query2;
 		$result2 = mysql_query($query2);
 		while($row2 = mysql_fetch_array($result2)) {
-			$motivo = $row2["motivo"];
+			$partida = $row2["partida"];
 			$cantidad_bs = $row2["cantidad_bs"];
 			$cantidad_usd = $row2["cantidad_usd"];
 			$cantidad_eur = $row2["cantidad_eur"];
-			print"
+      $gasto_bs = $row2["gasto_bs"];
+      $gasto_usd = $row2["gasto_usd"];
+      $gasto_eur = $row2["gasto_eur"];
+      $percent_bs = round((($cantidad_bs - $gasto_bs) * 100) / $cantidad_bs, 2);
+      $percent_usd = round((($cantidad_usd - $gasto_usd) * 100) / $cantidad_usd, 2);
+      $percent_eur = round((($cantidad_eur - $gasto_eur) * 100) / $cantidad_eur, 2);
+      if (!empty($partida)) {
+			  print"
 				<div class='bs-callout bs-callout-default' id='progress_group' data-parent='collapse$id_direccion'>
 				<h4>
-				$motivo
+				$partida
 				</h4>
 				
 					Bolivares (Bs)
 					<div class='progress' id='progress_parent' data-parent='collapse$id_direccion'>
-					<div class='progress-bar progress-bar-success progress-bar-striped' role='progressbar' aria-valuenow='40' aria-valuemin='0' aria-valuemax='100' style='width: 100%' id='progress_child' data-parent='collapse$id_direccion'>
-					100% ($cantidad_bs / $cantidad_bs)
+					<div class='progress-bar progress-bar-success progress-bar-striped' role='progressbar' aria-valuenow='$percent_bs' aria-valuemin='0' aria-valuemax='100' style='width: $percent_bs%' id='progress_child' data-parent='collapse$id_direccion'>
+					<b>$percent_bs%</b> (<b>$gasto_bs</b> gastados  de  <b>$cantidad_bs</b> presupuestados)
 					<span class='sr-only'>
-					40% Restante
+					$percent_bs% Restante
 					</span>
 					</div id='progress_child'>
 					</div id='progress_parent'>
 				
 					Dolares ($)
 					<div class='progress' id='progress_parent' data-parent='collapse$id_direccion'>
-					<div class='progress-bar progress-bar-info progress-bar-striped' role='progressbar' aria-valuenow='20' aria-valuemin='0' aria-valuemax='100' style='width: 100%' id='progress_child' data-parent='collapse$id_direccion'>
-					100% ($cantidad_usd / $cantidad_usd)
+					<div class='progress-bar progress-bar-info progress-bar-striped' role='progressbar' aria-valuenow='$percent_usd' aria-valuemin='0' aria-valuemax='100' style='width: $percent_usd%' id='progress_child' data-parent='collapse$id_direccion'>
+					<b>$percent_usd%</b> (<b>$gasto_usd</b> gastados  de  <b>$cantidad_usd</b> presupuestados)
 					<span class='sr-only'>
-					20% Restante
+					$percent_usd% Restante
 					</span>
 					</div id='progress_child'>
 					</div id='progress_parent'>
 				
 					Euros (€)
 					<div class='progress' id='progress_parent' data-parent='collapse$id_direccion'>
-					<div class='progress-bar progress-bar-warning progress-bar-striped' role='progressbar' aria-valuenow='60' aria-valuemin='0' aria-valuemax='100' style='width: 100%' id='progress_child' data-parent='collapse$id_direccion'>
-					100% ($cantidad_eur / $cantidad_eur)
+					<div class='progress-bar progress-bar-warning progress-bar-striped' role='progressbar' aria-valuenow='$percent_eur' aria-valuemin='0' aria-valuemax='100' style='width: $percent_eur%' id='progress_child' data-parent='collapse$id_direccion'>
+					<b>$percent_eur%</b> (<b>$gasto_eur</b> gastados  de  <b>$cantidad_eur</b> presupuestados)
 					<span class='sr-only'>
-					60% Restante
+					$percent_eur% Restante
 					</span>
 					</div id='progress_child'>
 					</div id='progress_parent'>
 				</div id='progress_group'>";
+      }
 		}
 	print "	</div id='collapse$id_direccion'>";
 	}
@@ -143,55 +174,6 @@ include "navbar.php";
     </div>
     
     <!-- /. Container -->
-    
-    <script type="text/javascript">
-      $('#fecha').datepicker({
-        format: "yyyy-mm-dd",
-        weekStart: 1,
-        language: "es",
-        autoclose: true,
-        todayHighlight: true
-      }
-                            );
-    </script>
-    
-    <script type="text/javascript">
-      
-      function EnviarDatos() {
-        
-        var Tipo = $('#tipo').val();
-        var Prioridad = $('#prioridad').val();
-        var Beneficiario = $('#beneficiario').val();
-        var Descripcion = $('#descripcion').val();
-        var Monto = $('#monto').val();
-        var Fecha = $('#fecha').val();
-        
-        $.ajax({
-          type: "POST",
-          url: "operacionesAjax/insertarPresupuesto.php",
-          data: {
-            tipo:Tipo, prioridad:Prioridad, beneficiario:Beneficiario, descripcion:Descripcion, monto:Monto, fecha:Fecha }
-          ,
-          success : function(data) {
-            console.log(data);
-            $('#mensaje').html('<div class="alert alert-success">Pago Insertado</div>');
-          }
-        }
-              )
-      }
-      
-      $("#Guardar").click(function() {
-        EnviarDatos();
-        $('#InsertaPago').trigger("reset");
-      }
-                         );
-      
-      $("#Cancelar").click(function() {
-        $('#InsertaPago').trigger("reset");
-      }
-                          );
-    </script>
-    
   </body>
 </html>
 
